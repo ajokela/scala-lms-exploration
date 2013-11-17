@@ -1,0 +1,23 @@
+export JAVA_OPTS="-Xmx4g -XX:MaxPermSize=2g -XX:ReservedCodeCacheSize=128m -XX:+CMSClassUnloadingEnabled -XX:+CMSPermGenSweepingEnabled"
+
+# you'll need to have sbt installed - on a mac with homebrew, brew install sbt
+
+git clone https://github.com/TiarkRompf/virtualization-lms-core.git
+git clone https://github.com/stanford-ppl/Delite.git
+git clone https://github.com/stanford-ppl/Forge.git
+
+cd virtualization-lms-core
+git checkout delite-develop
+sbt publish-local
+
+cd ../Delite
+sbt update
+sbt "; project framework; publish-local; project runtime; publish-local; project delite-test; publish-local"
+export DELITE_HOME=$PWD
+
+cd ../Forge
+sbt update
+export FORGE_HOME=$PWD
+bin/update ppl.dsl.forge.dsls.optiml.OptiMLDSLRunner OptiML
+
+
