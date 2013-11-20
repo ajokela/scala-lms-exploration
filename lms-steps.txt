@@ -1,10 +1,15 @@
 export JAVA_OPTS="-Xmx4g -XX:MaxPermSize=2g -XX:ReservedCodeCacheSize=128m -XX:+CMSClassUnloadingEnabled -XX:+CMSPermGenSweepingEnabled"
 
+export JAVA_HOME=`/usr/libexec/java_home -v 1.7`
+
 # you'll need to have sbt installed - on a mac with homebrew, brew install sbt
 
 git clone https://github.com/TiarkRompf/virtualization-lms-core.git
+# git@github.com:ajokela/virtualization-lms-core.git
 git clone https://github.com/stanford-ppl/Delite.git
+# git@github.com:ajokela/lms-delite-profiling.git
 git clone https://github.com/stanford-ppl/Forge.git
+# git@github.com:ajokela/Forge.git
 
 cd virtualization-lms-core
 git checkout delite-develop
@@ -19,5 +24,18 @@ cd ../Forge
 sbt update
 export FORGE_HOME=$PWD
 bin/update ppl.dsl.forge.dsls.optiml.OptiMLDSLRunner OptiML
+
+# the above will fail with a file-not-found from Stanford
+
+cd ../
+git clone git@github.com:js-scala/js-scala.git
+cd js-scala
+sbt
+
+# blows up with PermGen errors, or class not found
+
+trying this:
+
+download: http://stanford-ppl.github.io/Delite/optiml/downloads/optiml-0.3.2-alpha.tgz
 
 
